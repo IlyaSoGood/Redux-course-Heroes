@@ -1,5 +1,12 @@
+// import { useEffect } from "react";
 
-const HeroesListItem = ({name, description, element}) => {
+const HeroesListItem = ({name, description, element, deleteHeroById} ) => {
+    // useEffect(() => {
+    //     console.log(`mount - ${name}`)
+    //     return () => {
+    //         console.log(`unmount - ${name}`)
+    //     }
+    // }, [])
 
     let elementClassName;
 
@@ -32,7 +39,10 @@ const HeroesListItem = ({name, description, element}) => {
                 <h3 className="card-title">{name}</h3>
                 <p className="card-text">{description}</p>
             </div>
-            <span className="position-absolute top-0 start-100 translate-middle badge border rounded-pill bg-light">
+            <span 
+                className="position-absolute top-0 start-100 translate-middle badge border rounded-pill bg-light"
+                onClick={() => deleteHeroById()}
+            >
                 <button type="button" className="btn-close btn-close" aria-label="Close"></button>
             </span>
         </li>
