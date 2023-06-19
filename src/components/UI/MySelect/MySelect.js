@@ -17,11 +17,12 @@ const MySelect = ({options, defaultOption, label, labelClass, onChange, ...props
                 value={field.value}
             >
                     <option disabled value="">{defaultOption}</option>
-                    {options ? options.map(option => 
+                    {options && options.length > 0
+                        ? options.map(option => 
                         <option key={option.value} value={option.value}>
                             {option.name}
-                        </option>
-                    ) : null}
+                        </option>) 
+                        : null}
             </select>
 
 

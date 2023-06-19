@@ -1,10 +1,8 @@
-import { useEffect } from 'react';
-
 import { Formik, Form } from 'formik';
 
 import {useHttp} from '../../hooks/http.hook';
 import { useDispatch, useSelector } from 'react-redux';
-import { filtersFetching, filtersFetched, filtersFetchingError, addHero, filterApply, filterClear } from '../../actions';
+import { addHero, filterApply, filterClear } from '../../actions';
 
 
 import * as uuid from 'uuid';
@@ -31,25 +29,43 @@ const HeroesAddForm = () => {
     const dispatch = useDispatch();
     const {request} = useHttp();
 
-    useEffect(() => {
-        dispatch(filtersFetching());
-        request("http://localhost:3001/filters")
-            .then(data => dispatch(filtersFetched(data)))
-            .catch(() => dispatch(filtersFetchingError()))
+    const renderFilters = (filters, status) => {
+        if (status === "loading") {
+            return <Spinner/>;
+        } else if (status === "error") {
+            return <h5 className="text-center mt-5">Ошибка загрузки</h5>
+        }  
+        return filters.filter(filter => filter.value);
 
-        // eslint-disable-next-line
-    }, []);
-
-    if (filtersLoadingStatus === "loading") {
-        return <Spinner/>;
-    } else if (filtersLoadingStatus === "error") {
-        return <h5 className="text-center mt-5">Ошибка загрузки</h5>
     }
 
-    const options = filters.filter(filter => filter.value);
 
-    const onSubmit = (e) => {
-        
+    const onSubmit = (data, actions) => {
+        const hero = {
+            ...data,
+            id: uuid.v4()
+        }
+        // console.log(JSON.stringify(hero, null, 2))
+
+        request("http://localhost:3001/heroes", "POST", JSON.stringify(hero, null, 2))
+            .then(data => console.log(data))
+            .then(data => {
+                dispatch(addHero(hero));
+                if(activeFilter) {
+                    dispatch(filterApply())
+                } 
+                else {
+                    dispatch(filterClear())
+                }
+            })
+            .then(actions.resetForm({
+                values: {
+                    name: '',
+                    description: '',
+                    element: ''
+                }
+            }))
+            .catch((e) => console.log(e.message))
     }
 
     return (
@@ -60,22 +76,7 @@ const HeroesAddForm = () => {
                 element: ''
             }}
             validate = {validateRules}
-            onSubmit = {data => {
-                const hero = {
-                    ...data,
-                    id: uuid.v4()
-                }
-                // console.log(JSON.stringify(hero, null, 2))
-                dispatch(addHero(hero));
-                if(activeFilter) {
-                    dispatch(filterApply())
-                } else {
-                    dispatch(filterClear())
-                }
-                request("http://localhost:3001/heroes", "POST", JSON.stringify(hero, null, 2))
-                    .then(data => console.log(data))
-                    .catch((e) => console.log(e.message))
-            }}
+            onSubmit = {onSubmit}
         >
             <Form className="border p-4 shadow-lg rounded">
                 <div className="mb-3">
@@ -114,13 +115,7 @@ const HeroesAddForm = () => {
                         defaultOption="Я владею элементом..."
                         label="Выбрать элемент героя"
                         labelClass="form-label"
-                        // options={[
-                        //     {value: 'fire', name: 'Огонь'},
-                        //     {value: 'water', name: 'Вода'},
-                        //     {value: 'wind', name: 'Ветер'},
-                        //     {value: 'earth', name: 'Земля'}
-                        // ]}
-                        options={options}
+                        options={renderFilters(filters, filtersLoadingStatus)}
 
                     />
                 </div>

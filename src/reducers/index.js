@@ -56,7 +56,7 @@ const reducer = (state = initialState, action) => {
         case 'ADD_HERO':
             return {
                 ...state,
-                heroes: [...state.heroes, action.payload]   
+                heroes: [...state.heroes, action.payload]
             }
 
 
