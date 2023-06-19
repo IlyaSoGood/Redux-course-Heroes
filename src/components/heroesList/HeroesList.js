@@ -32,7 +32,10 @@ const HeroesList = () => {
     }
 
     const deleteHeroById= (id) => {
-        dispatch(deleteHero(id))
+        dispatch(deleteHero(id));
+        request(`http://localhost:3001/heroes/${id}`, "DELETE")
+            .then(data => console.log(data))
+            .catch((e) => console.log(e.message))
     }
 
     const renderHeroesList = (arr) => {

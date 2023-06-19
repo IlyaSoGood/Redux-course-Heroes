@@ -52,7 +52,7 @@ const HeroesAddForm = () => {
         <Formik
             initialValues={{
                 name: '',
-                text: '',
+                description: '',
                 element: ''
             }}
             validate = {validateRules}
@@ -68,7 +68,9 @@ const HeroesAddForm = () => {
                 } else {
                     dispatch(filterClear())
                 }
-                
+                request("http://localhost:3001/heroes", "POST", JSON.stringify(hero, null, 2))
+                    .then(data => console.log(data))
+                    .catch((e) => console.log(e.message))
             }}
         >
             <Form className="border p-4 shadow-lg rounded">
@@ -89,7 +91,7 @@ const HeroesAddForm = () => {
                     <MyTextInput
                         Component='textarea'
                         type="text" 
-                        name="text" 
+                        name="description" 
                         className="form-control" 
                         id="text" 
                         placeholder="Что я умею?"

@@ -7,10 +7,10 @@ const validateRules = values => {
         errors.name = 'Min 2 symbols'
     }
 
-    if(!values.text) {
-        errors.text = 'This field is required'
-    } else if(values.text.length < 4) {
-        errors.text = 'Min 4 symbols'
+    if(!values.description) {
+        errors.description = 'This field is required'
+    } else if(values.description.length < 4) {
+        errors.description = 'Min 4 symbols'
     }
 
     if(!values.element) {
