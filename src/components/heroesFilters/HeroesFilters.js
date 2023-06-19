@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import {useHttp} from '../../hooks/http.hook';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,11 +16,9 @@ import MyButton from "../UI/MyButton/MyButton";
 // Представьте, что вы попросили бэкенд-разработчика об этом
 
 const HeroesFilters = () => {
-    const {filters, filtersLoadingStatus} = useSelector(state => state);
+    const {filters, filtersLoadingStatus, activeFilter} = useSelector(state => state);
     const dispatch = useDispatch();
     const {request} = useHttp();
-
-    const [selectedFilter, setSelectedFilter] = useState('');
 
     useEffect(() => {
         dispatch(filtersFetching());
@@ -38,7 +36,6 @@ const HeroesFilters = () => {
     }
 
     const changeFilter = (value) => {
-        setSelectedFilter(value)
         if (value) {
             dispatch(filterChange(value));            
         } else {
@@ -46,7 +43,12 @@ const HeroesFilters = () => {
         }
     }
 
-    const btns = filters.map(filter => {
+    const renderBtns = (arr) => {
+        if (arr.length === 0) {
+            return <h5 className="text-center mt-5">Фильтры не найдены</h5>
+        }
+
+        return filters.map(filter => {
             return (
                 <MyButton
                     filter={filter}
@@ -54,17 +56,19 @@ const HeroesFilters = () => {
                         changeFilter(value)
                     }}
                     key={filter.id}
-                    selectedFilter={selectedFilter}
+                    selectedFilter={activeFilter}
                 />
             )
         })
+    }
+
 
     return (
         <div className="card shadow-lg mt-4">
             <div className="card-body">
                 <p className="card-text">Отфильтруйте героев по элементам</p>
                 <div className="btn-group">
-                    {btns}
+                    {renderBtns(filters)}
                 </div>
             </div>
         </div>
