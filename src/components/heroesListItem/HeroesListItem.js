@@ -1,13 +1,4 @@
-// import { useEffect } from "react";
-
 const HeroesListItem = ({name, description, element, deleteHeroById} ) => {
-    // useEffect(() => {
-    //     console.log(`mount - ${name}`)
-    //     return () => {
-    //         console.log(`unmount - ${name}`)
-    //     }
-    // }, [])
-
     let elementClassName;
 
     switch (element) {

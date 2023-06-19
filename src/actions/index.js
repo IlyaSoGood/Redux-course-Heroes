@@ -53,3 +53,22 @@ export const filtersFetchingError = () => {
         type: 'FILTERS_FETCHING_ERROR'
     }
 }
+
+export const filterChange = (value) => {
+    return {
+        type: 'FILTER_CHANGE',
+        payload: value
+    }
+}
+
+export const filterApply = () => {
+    return {
+        type: 'FILTER_APPLY',
+    }
+}
+
+export const filterClear = () => {
+    return {
+        type: 'FILTER_CLEAR'
+    }
+}

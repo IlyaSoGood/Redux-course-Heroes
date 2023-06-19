@@ -3,6 +3,8 @@ const initialState = {
     heroesLoadingStatus: 'idle',
     filters: [],
     filtersLoadingStatus: 'idle',
+    activeFilter: '',
+    filteredHeroes: []
 }
 
 const reducer = (state = initialState, action) => {
@@ -16,6 +18,7 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 heroes: action.payload,
+                filteredHeroes: action.payload,
                 heroesLoadingStatus: 'idle'
             }
         case 'HEROES_FETCHING_ERROR':
@@ -47,8 +50,8 @@ const reducer = (state = initialState, action) => {
         case 'DELETE_HERO':
             return {
                 ...state,
-                heroes: state.heroes.filter(hero => hero.id !== action.payload)
-                
+                heroes: state.heroes.filter(hero => hero.id !== action.payload),
+                filteredHeroes: state.filteredHeroes.filter(hero => hero.id !== action.payload)
             }
         case 'ADD_HERO':
             return {
@@ -58,6 +61,26 @@ const reducer = (state = initialState, action) => {
             }
 
 
+        case 'FILTER_CHANGE':
+            return {
+                ...state,
+                activeFilter: action.payload,
+                filteredHeroes: state.heroes.filter(hero => hero.element === action.payload)
+                
+            }
+        case 'FILTER_APPLY':
+            return {
+                ...state,
+                filteredHeroes: state.heroes.filter(hero => hero.element === state.activeFilter)
+                
+            }
+        case 'FILTER_CLEAR':
+            return {
+                ...state,
+                activeFilter: '',
+                filteredHeroes: state.heroes
+                
+            }
 
         default: return state
     }

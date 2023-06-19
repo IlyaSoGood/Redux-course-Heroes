@@ -2,7 +2,7 @@ import { useField } from "formik";
 
 const MySelect = ({options, defaultOption, label, labelClass, onChange, ...props}) => {
     const [field, meta] = useField(props);
-    console.log(options)
+
     return (
         <>
             <label htmlFor={props.name} className={labelClass}>{label}</label>
@@ -17,11 +17,11 @@ const MySelect = ({options, defaultOption, label, labelClass, onChange, ...props
                 value={field.value}
             >
                     <option disabled value="">{defaultOption}</option>
-                    {/* {options.map(option => 
+                    {options ? options.map(option => 
                         <option key={option.value} value={option.value}>
                             {option.name}
                         </option>
-                    )} */}
+                    ) : null}
             </select>
 
 

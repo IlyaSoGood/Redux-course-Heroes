@@ -4,13 +4,13 @@ import { Formik, Form } from 'formik';
 
 import {useHttp} from '../../hooks/http.hook';
 import { useDispatch, useSelector } from 'react-redux';
-import { filtersFetching, filtersFetched, filtersFetchingError, addHero } from '../../actions';
+import { filtersFetching, filtersFetched, filtersFetchingError, addHero, filterApply, filterClear } from '../../actions';
 
 
 import * as uuid from 'uuid';
 
-import MyTextInput from '../UI/MyTextInput';
-import MySelect from '../UI/MySelect';
+import MyTextInput from '../UI/MyTextInput/MyTextInput';
+import MySelect from '../UI/MySelect/MySelect';
 import Spinner from '../spinner/Spinner';
 
 import validateRules from './validateRules';
@@ -27,7 +27,7 @@ import validateRules from './validateRules';
 // данных из фильтров
 
 const HeroesAddForm = () => {
-    const {filters, filtersLoadingStatus} = useSelector(state => state);
+    const {filters, filtersLoadingStatus, activeFilter} = useSelector(state => state);
     const dispatch = useDispatch();
     const {request} = useHttp();
 
@@ -46,9 +46,7 @@ const HeroesAddForm = () => {
         return <h5 className="text-center mt-5">Ошибка загрузки</h5>
     }
 
-    // console.log(filters)
     const options = filters.filter(filter => filter.value);
-    console.log(options)
 
     return (
         <Formik
@@ -58,12 +56,19 @@ const HeroesAddForm = () => {
                 element: ''
             }}
             validate = {validateRules}
-            onSubmit = {values => {
-                values = {
-                    ...values,
+            onSubmit = {hero => {
+                hero = {
+                    ...hero,
                     id: uuid.v4()
                 }
-                console.log(JSON.stringify(values, null, 2))
+                // console.log(JSON.stringify(hero, null, 2))
+                dispatch(addHero(hero));
+                if(activeFilter) {
+                    dispatch(filterApply())
+                } else {
+                    dispatch(filterClear())
+                }
+                
             }}
         >
             <Form className="border p-4 shadow-lg rounded">
@@ -109,7 +114,7 @@ const HeroesAddForm = () => {
                         //     {value: 'wind', name: 'Ветер'},
                         //     {value: 'earth', name: 'Земля'}
                         // ]}
-                        options={options.length > 0 ? options : ''}
+                        options={options}
 
                     />
                 </div>
