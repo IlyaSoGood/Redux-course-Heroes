@@ -1,5 +1,6 @@
 import {useHttp} from '../../hooks/http.hook';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { heroesFetching, heroesFetched, heroesFetchingError, deleteHero } from '../../actions';
@@ -24,6 +25,14 @@ const HeroesList = () => {
 
         // eslint-disable-next-line
     }, []);
+    
+    const deleteHeroById = useCallback((id) => {
+        request(`http://localhost:3001/heroes/${id}`, "DELETE")
+            .then(data => console.log(data))
+            .then(dispatch(deleteHero(id)))
+            .catch((e) => console.log(e.message))
+        // eslint-disable-next-line
+    },[request])
 
     if (heroesLoadingStatus === "loading") {
         return <Spinner/>;
@@ -31,28 +40,40 @@ const HeroesList = () => {
         return <h5 className="text-center mt-5">Ошибка загрузки</h5>
     }
 
-    const deleteHeroById= (id) => {
-        dispatch(deleteHero(id));
-        request(`http://localhost:3001/heroes/${id}`, "DELETE")
-            .then(data => console.log(data))
-            .catch((e) => console.log(e.message))
-    }
+
 
     const renderHeroesList = (arr) => {
         if (arr.length === 0) {
-            return <h5 className="text-center mt-5">Героев пока нет</h5>
+            return (
+                <CSSTransition
+                    timeout={0}
+                    classNames="hero">
+                    <h5 className="text-center mt-5">Героев пока нет</h5>
+                </CSSTransition>
+            )
         }
 
         return arr.map(({id, ...props}) => {
-            return <HeroesListItem key={id} {...props} deleteHeroById={() => deleteHeroById(id)}/>
+            return  <CSSTransition
+                        key={id}
+                        timeout={500}
+                        classNames="card"
+                    >
+                        <HeroesListItem 
+                            {...props} 
+                            deleteHeroById={() => deleteHeroById(id)} 
+                            // id={id}
+                        />
+                    </CSSTransition>
+
         })
     }
 
     const elements = renderHeroesList(filteredHeroes);
     return (
-        <ul>
+        <TransitionGroup element='ul'>
             {elements}
-        </ul>
+        </TransitionGroup>
     )
 }
 

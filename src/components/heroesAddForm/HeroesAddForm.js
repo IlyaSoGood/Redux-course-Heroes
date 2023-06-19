@@ -48,6 +48,10 @@ const HeroesAddForm = () => {
 
     const options = filters.filter(filter => filter.value);
 
+    const onSubmit = (e) => {
+        
+    }
+
     return (
         <Formik
             initialValues={{
@@ -56,9 +60,9 @@ const HeroesAddForm = () => {
                 element: ''
             }}
             validate = {validateRules}
-            onSubmit = {hero => {
-                hero = {
-                    ...hero,
+            onSubmit = {data => {
+                const hero = {
+                    ...data,
                     id: uuid.v4()
                 }
                 // console.log(JSON.stringify(hero, null, 2))
