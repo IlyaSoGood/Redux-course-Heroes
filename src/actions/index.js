@@ -54,9 +54,11 @@ export const filtersFetchingError = () => {
     }
 }
 
-export const filterChange = (value) => {
-    return {
-        type: 'FILTER_CHANGE',
-        payload: value
-    }
+export const filterChange = (value) => (dispatch) => {
+    setTimeout(() => {
+        dispatch({
+            type: 'FILTER_CHANGE',
+            payload: value
+        })
+    }, 1000)
 }
