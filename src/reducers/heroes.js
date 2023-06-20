@@ -12,6 +12,7 @@ const initialState = {
     heroesLoadingStatus: 'idle',
 }
 
+//1ый ВАРИАНт
 //ВИЗУАЛЬНО НЕИММУТАБЕЛЬНЫЙ код, но внутри используется immer.js, поэтому все равно иммутабельность применяется
 // const heroes = createReducer(initialState, builder => {
 //     builder
@@ -50,6 +51,7 @@ const heroes = createReducer(initialState, {
     state => state
 )
 
+//Изначальный вариант reducer ручным способом
 // const heroes = (state = initialState, action) => {
 //     switch (action.type) {
 //         case 'HEROES_FETCHING':
@@ -84,4 +86,4 @@ const heroes = createReducer(initialState, {
 //     }
 // }
 
-export default heroes;
+// export default heroes;
