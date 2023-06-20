@@ -60,15 +60,3 @@ export const filterChange = (value) => {
         payload: value
     }
 }
-
-export const filterApply = () => {
-    return {
-        type: 'FILTER_APPLY',
-    }
-}
-
-export const filterClear = () => {
-    return {
-        type: 'FILTER_CLEAR'
-    }
-}

@@ -7,16 +7,16 @@
       "element": "fire"
     },
     {
-      "id": 2,
-      "name": "Неизвестный герой",
-      "description": "Скрывающийся в тени",
-      "element": "wind"
-    },
-    {
       "id": 3,
       "name": "Морской герой",
       "description": "Как аквамен, но не из DC",
       "element": "water"
+    },
+    {
+      "name": "123",
+      "description": "12312",
+      "element": "fire",
+      "id": "36fba1c4-d9b9-42af-ada4-980c57dba53c"
     }
   ],
   "filters": [

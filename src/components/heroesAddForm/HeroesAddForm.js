@@ -2,7 +2,7 @@ import { Formik, Form } from 'formik';
 
 import {useHttp} from '../../hooks/http.hook';
 import { useDispatch, useSelector } from 'react-redux';
-import { addHero, filterApply, filterClear } from '../../actions';
+import { addHero } from '../../actions';
 
 
 import * as uuid from 'uuid';
@@ -25,7 +25,7 @@ import validateRules from './validateRules';
 // данных из фильтров
 
 const HeroesAddForm = () => {
-    const {filters, filtersLoadingStatus, activeFilter} = useSelector(state => state);
+    const {filters, filtersLoadingStatus } = useSelector(state => state.filters);
     const dispatch = useDispatch();
     const {request} = useHttp();
 
@@ -51,12 +51,6 @@ const HeroesAddForm = () => {
             .then(data => console.log(data))
             .then(data => {
                 dispatch(addHero(hero));
-                if(activeFilter) {
-                    dispatch(filterApply())
-                } 
-                else {
-                    dispatch(filterClear())
-                }
             })
             .then(actions.resetForm({
                 values: {

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 import {useHttp} from '../../hooks/http.hook';
 import { useDispatch, useSelector } from 'react-redux';
-import { filtersFetching, filtersFetched, filtersFetchingError, filterChange, filterClear } from '../../actions';
+import { filtersFetching, filtersFetched, filtersFetchingError, filterChange } from '../../actions';
 
 import Spinner from '../spinner/Spinner';
 import MyButton from "../UI/MyButton/MyButton";
@@ -16,7 +16,7 @@ import MyButton from "../UI/MyButton/MyButton";
 // Представьте, что вы попросили бэкенд-разработчика об этом
 
 const HeroesFilters = () => {
-    const {filters, filtersLoadingStatus, activeFilter} = useSelector(state => state);
+    const {filters, filtersLoadingStatus, activeFilter} = useSelector(state => state.filters);
     const dispatch = useDispatch();
     const {request} = useHttp();
 
@@ -36,11 +36,7 @@ const HeroesFilters = () => {
     }
 
     const changeFilter = (value) => {
-        if (value) {
-            dispatch(filterChange(value));            
-        } else {
-            dispatch(filterClear());
-        }
+        dispatch(filterChange(value));            
     }
 
     const renderBtns = (arr) => {
