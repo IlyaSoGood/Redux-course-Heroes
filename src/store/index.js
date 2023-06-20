@@ -26,3 +26,8 @@ const store = configureStore({
 })
 
 export default store;
+
+// !!! 
+// 1. В reducer стараться не передавать больше 1 поля, все действия стараться делать в actionCreator
+// 2. В actionCreator передавать только строки первым аргументом
+// 3. Сложенные actionCreators пока не трогаем, для них в rt есть отдельный фун-ал.
