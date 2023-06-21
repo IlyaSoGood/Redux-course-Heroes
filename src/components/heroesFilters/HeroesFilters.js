@@ -2,13 +2,20 @@ import { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { filterChange, fetchFilters } from './filtersSlice';
+import { filterChange, fetchFilters, selectAll } from './filtersSlice';
+import store from '../../store';
 
 import Spinner from '../spinner/Spinner';
 import MyButton from "../UI/MyButton/MyButton";
 
 const HeroesFilters = () => {
-    const {filters, filtersLoadingStatus, activeFilter} = useSelector(state => state.filters);
+    //тоже работает, но неизвестно правильно ли...
+    // const filters = useSelector(selectAll);
+    
+    const filters = selectAll(store.getState())
+
+    const { filtersLoadingStatus, activeFilter } = useSelector(state => state.filters);
+    
     const dispatch = useDispatch();
 
     useEffect(() => {

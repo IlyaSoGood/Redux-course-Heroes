@@ -4,7 +4,6 @@ import {useHttp} from '../../hooks/http.hook';
 import { useDispatch, useSelector } from 'react-redux';
 import { addHero } from '../heroesList/heroesSlice';
 
-
 import * as uuid from 'uuid';
 
 import MyTextInput from '../UI/MyTextInput/MyTextInput';
@@ -12,9 +11,16 @@ import MySelect from '../UI/MySelect/MySelect';
 import Spinner from '../spinner/Spinner';
 
 import validateRules from './validateRules';
+import { selectAll } from '../heroesFilters/filtersSlice';
+import store from '../../store';
 
 const HeroesAddForm = () => {
-    const {filters, filtersLoadingStatus } = useSelector(state => state.filters);
+    //тоже работает, но неизвестно правильно ли...
+    // const filters  = useSelector(selectAll);
+    
+    const filters = selectAll(store.getState())
+
+    const { filtersLoadingStatus } = useSelector(state => state.filters);
     const dispatch = useDispatch();
     const {request} = useHttp();
 
