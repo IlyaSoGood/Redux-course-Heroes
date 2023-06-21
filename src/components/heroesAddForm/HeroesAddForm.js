@@ -1,8 +1,8 @@
 import { Formik, Form } from 'formik';
 
-import {useHttp} from '../../hooks/http.hook';
-import { useDispatch, useSelector } from 'react-redux';
-import { addHero } from '../heroesList/heroesSlice';
+import {  useSelector } from 'react-redux';
+
+import { useCreateHeroMutation } from '../../api/apiSlice';
 
 import * as uuid from 'uuid';
 
@@ -20,14 +20,14 @@ const HeroesAddForm = () => {
     
     const filters = selectAll(store.getState())
 
+    const [createHero, { isLoading, isError }] = useCreateHeroMutation();
+
     const { filtersLoadingStatus } = useSelector(state => state.filters);
-    const dispatch = useDispatch();
-    const {request} = useHttp();
 
     const renderFilters = (filters, status) => {
-        if (status === "loading") {
+        if (isLoading) {
             return <Spinner/>;
-        } else if (status === "error") {
+        } else if (isError) {
             return <h5 className="text-center mt-5">Ошибка загрузки</h5>
         }  
         return filters.filter(filter => filter.value);
@@ -42,19 +42,15 @@ const HeroesAddForm = () => {
         }
         // console.log(JSON.stringify(hero, null, 2))
 
-        request("http://localhost:3001/heroes", "POST", JSON.stringify(hero, null, 2))
-            .then(data => console.log(data))
-            .then(data => {
-                dispatch(addHero(hero));
-            })
-            .then(actions.resetForm({
-                values: {
-                    name: '',
-                    description: '',
-                    element: ''
-                }
-            }))
-            .catch((e) => console.log(e.message))
+        createHero(hero).unwrap();
+        
+        actions.resetForm({
+            values: {
+                name: '',
+                description: '',
+                element: ''
+            }
+        })
     }
 
     return (
